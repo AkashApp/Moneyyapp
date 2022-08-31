@@ -1,12 +1,28 @@
-const mongoose= require('mongoose');
+const express= require('express');
 
-const ReviewSchema= new mongoose.Schema({
-    userId:{type: 'string', required: true},
-    description: {type: 'string', required: true},
-    BlogId:{type: mongoose.Schema.Types.ObjectId, ref:'Blog', required: true},
-},{
-    versionKey:false,
-    timestamps:true
+const Review= require('../models/ReviewModel');
+
+const router= express.Router();
+
+
+router.post("", async(req,res)=>{
+    try {
+        const review= await Review.create(req.body);
+
+        return res.status(201).send(review);
+    } catch (error) {
+        return res.status(500).send(error.massage);
+    }
 });
 
-module.exports=mongoose.model('Review', ReviewSchema);
+router.delete("/:id", async(req, res)=>{
+    try {
+        const review= await Review.findByIdAndDelete(req.params.id).lean().exec();
+
+        return res.status(201).send(review);
+    } catch (error) {
+        return res.status(500).send(error.massage);
+    }
+});
+
+module.exports= router;

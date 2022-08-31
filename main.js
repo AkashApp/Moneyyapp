@@ -1,7 +1,13 @@
 const express= require("express");
 
+const BlogController= require('./src/controllers/BlogController');
+const ReviewController= require('./src/controllers/ReviewController');
+
 const app= express();
 app.use(express.json());
+
+app.use('/blog', BlogController);
+app.use('/review', ReviewController);
 
 app.listen(7492, async()=>{
     try {
